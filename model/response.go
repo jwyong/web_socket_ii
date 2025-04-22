@@ -1,16 +1,28 @@
 package model
 
-import "encoding/json"
+import (
+	"encoding/json"
+)
+
+type ResponseType string
+
+const (
+	TypeBattInfo ResponseType = "BATT"
+	TypeChat     ResponseType = "CHAT"
+	TypeAppt     ResponseType = "APPT"
+)
 
 type Response struct {
-	Status string `json:"status"`
-	Data   any    `json:"data"`
+	Status string       `json:"status"`
+	Type   ResponseType `json:"type,omitempty"`
+	Data   any          `json:"data"`
 }
 
 // Returns JSON bytes for a success response
-func ResponseSuccess(data any) ([]byte, error) {
+func ResponseSuccess(data any, respType ResponseType) ([]byte, error) {
 	resp := Response{
 		Status: "success",
+		Type:   respType,
 		Data:   data,
 	}
 	return json.Marshal(resp)

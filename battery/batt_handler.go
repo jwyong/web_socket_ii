@@ -42,7 +42,7 @@ func HandleWebSocket(w http.ResponseWriter, r *http.Request) {
 		log.Printf("Battery info received: %+v\n", data)
 
 		// Return success
-		jsonResp, _ := model.ResponseSuccess(data)
+		jsonResp, _ := model.ResponseSuccess(data, model.TypeBattInfo)
 		conn.WriteMessage(websocket.TextMessage, jsonResp)
 	}
 }
