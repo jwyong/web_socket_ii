@@ -11,7 +11,7 @@ import (
 type BatteryInfo struct {
 	Level       int     `json:"level"`
 	Charging    bool    `json:"charging"`
-	Temperature float64 `json:"temperature"`
+	Temperature int `json:"temperature"`
 }
 
 var upgrader = websocket.Upgrader{
