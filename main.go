@@ -12,9 +12,11 @@ import (
 func main() {
 	http.HandleFunc("/ws/battery", battery.HandleWebSocket)
 
-	fmt.Println("WebSocket server listening on https://0.0.0.0" + config.TLSPort)
+	port := ":8080"
+	fmt.Println("WebSocket server listening on http://0.0.0.0" + port)
 
-	if err := http.ListenAndServeTLS(config.TLSPort, config.CertFile, config.KeyFile, nil); err != nil {
-		log.Fatal("ListenAndServeTLS:", err)
+	// TODO: JAY_LOG - no SSL for now
+	if err := http.ListenAndServe(port, nil); err != nil {
+		log.Fatal("ListenAndServe:", err)
 	}
 }
