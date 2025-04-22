@@ -4,7 +4,13 @@ import (
 	"encoding/json"
 )
 
+type Status string
 type ResponseType string
+
+const (
+	Success Status = "SUCCESS"
+	Error   Status = "ERROR"
+)
 
 const (
 	TypeBattInfo ResponseType = "BATT"
@@ -13,7 +19,7 @@ const (
 )
 
 type Response struct {
-	Status string       `json:"status"`
+	Status Status       `json:"status"`
 	Type   ResponseType `json:"type,omitempty"`
 	Data   any          `json:"data"`
 }
@@ -21,7 +27,7 @@ type Response struct {
 // Returns JSON bytes for a success response
 func ResponseSuccess(data any, respType ResponseType) ([]byte, error) {
 	resp := Response{
-		Status: "success",
+		Status: Success,
 		Type:   respType,
 		Data:   data,
 	}
@@ -31,7 +37,7 @@ func ResponseSuccess(data any, respType ResponseType) ([]byte, error) {
 // Returns JSON bytes for an error response
 func ResponseError(message string) ([]byte, error) {
 	resp := Response{
-		Status: "error",
+		Status: Error,
 		Data:   message,
 	}
 	return json.Marshal(resp)
