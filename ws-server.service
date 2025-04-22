@@ -1,0 +1,13 @@
+[Unit]
+Description=Golang WebSocket Server
+After=network.target
+
+[Service]
+ExecStart=/home/ubuntu/websocket-server/ws-server
+WorkingDirectory=/home/ubuntu/websocket-server
+Restart=always
+User=ubuntu
+Environment=GOPATH=/home/ubuntu/go
+
+[Install]
+WantedBy=multi-user.target
