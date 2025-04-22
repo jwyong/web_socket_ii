@@ -6,14 +6,15 @@ import (
 	"net/http"
 
 	"websocket-server/battery"
+	"websocket-server/config"
 )
 
 func main() {
 	http.HandleFunc("/ws/battery", battery.HandleWebSocket)
 
-	port := ":8080"
-	fmt.Println("WebSocket server listening on", port)
-	if err := http.ListenAndServe(port, nil); err != nil {
-		log.Fatal("ListenAndServe:", err)
+	fmt.Println("WebSocket server listening on https://0.0.0.0" + config.TLSPort)
+
+	if err := http.ListenAndServeTLS(config.TLSPort, config.CertFile, config.KeyFile, nil); err != nil {
+		log.Fatal("ListenAndServeTLS:", err)
 	}
 }
