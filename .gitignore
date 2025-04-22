@@ -23,3 +23,11 @@ go.work.sum
 
 # env file
 .env
+.DS_Store
+
+# certs
+certs/
+
+# ec2 hosting
+server.log
+websocket-server
