@@ -6,7 +6,6 @@ import (
 	"net/http"
 
 	"websocket-server/battery"
-	"websocket-server/config"
 )
 
 func main() {
