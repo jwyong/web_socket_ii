@@ -2,18 +2,13 @@ package battery
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/gorilla/websocket"
-)
 
-type BatteryInfo struct {
-	Level       int  `json:"level"`
-	Charging    bool `json:"charging"`
-	Temperature int  `json:"temperature"`
-}
+	"websocket-server/model"
+)
 
 var upgrader = websocket.Upgrader{
 	CheckOrigin: func(r *http.Request) bool {
@@ -36,17 +31,18 @@ func HandleWebSocket(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 
-		var data BatteryInfo
+		var data model.BatteryInfo
 		if err := json.Unmarshal(msg, &data); err != nil {
 			log.Println("Invalid JSON:", err)
-			conn.WriteMessage(websocket.TextMessage, []byte("Invalid JSON"))
+			jsonResp, _ := model.ResponseError("Invalid JSON:" + err.Error())
+			conn.WriteMessage(websocket.TextMessage, jsonResp)
 			continue
 		}
 
 		log.Printf("Battery info received: %+v\n", data)
-		message := fmt.Sprintf("Battery info received: %+v", data)
 
-		// Return ack on receiving battery info.
-		conn.WriteMessage(websocket.TextMessage, []byte(message))
+		// Return success
+		jsonResp, _ := model.ResponseSuccess(data)
+		conn.WriteMessage(websocket.TextMessage, jsonResp)
 	}
 }
