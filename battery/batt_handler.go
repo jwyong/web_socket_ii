@@ -2,6 +2,7 @@ package battery
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -9,9 +10,9 @@ import (
 )
 
 type BatteryInfo struct {
-	Level       int     `json:"level"`
-	Charging    bool    `json:"charging"`
-	Temperature int `json:"temperature"`
+	Level       int  `json:"level"`
+	Charging    bool `json:"charging"`
+	Temperature int  `json:"temperature"`
 }
 
 var upgrader = websocket.Upgrader{
@@ -43,6 +44,9 @@ func HandleWebSocket(w http.ResponseWriter, r *http.Request) {
 		}
 
 		log.Printf("Battery info received: %+v\n", data)
-		conn.WriteMessage(websocket.TextMessage, []byte("OK"))
+		message := fmt.Sprintf("Battery info received: %+v", data)
+
+		// Return ack on receiving battery info.
+		conn.WriteMessage(websocket.TextMessage, []byte(message))
 	}
 }
